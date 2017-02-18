@@ -1,48 +1,57 @@
 import { Component } from '@angular/core';
-import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
+import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 
 @Component({
   selector: 'app-root',
   template: `
-  <h1>{{ item | async | json }}</h1>
+  <ul>
+  	<!-- looping through a list -->
+    <li *ngFor="let item of items | async">
 
-  <input type="text" #newname placeholder="Name" />
-  <input type="text" #newsize placeholder="Size" />
-  <br />
+      <input type="text" #updatetext [value]="item.text" />
 
-  <button (click)="save(newname.value)">Set Name</button>
-  <button (click)="update(newsize.value)">Update Size</button>
-  <button (click)="delete()">Delete</button>
+      <button (click)="updateItem(item.$key, updatetext.value)">Update</button>
+      <button (click)="deleteItem(item.$key)">Delete</button>
+    </li>
+  </ul>
+
+  <input type="text" #newitem />
+
+  <button (click)="addItem(newitem.value)">Add</button>
+  <button (click)="deleteEverything()">Delete All</button>
   `,
 })
 
 export class AppComponent {
-  item: FirebaseObjectObservable<any>;
-  title: "My Title";
+  items: FirebaseListObservable<any>;
 
   constructor(af: AngularFire) {
-  	//as usual
-    this.item = af.database.object('/item');
+    this.items = af.database.list('/messages');
   }
-  save(newName: string) {
-    this.item.set({ name: newName });
+  addItem(newName: string) {
+    this.items.push({ text: newName });
   }
-  update(newSize: string) {
-    this.item.update({ size: newSize });
+  updateItem(key: string, newText: string) {
+    this.items.update(key, { text: newText });
   }
-  delete() {
-    this.item.remove();
+  deleteItem(key: string) {    
+    this.items.remove(key); 
+  }
+  deleteEverything() {
+    this.items.remove();
   }
 }
 
-/* Retrieving the snapshot
-???????????????????????????
+/*
+Retieving the snapshot
 
-this.item = af.database.object('/item', { preserveSnapshot: true });
-this.item.subscribe(snapshot => {
-  console.log(snapshot.key)
-  console.log(snapshot.val())
-}
-*/
+this.items = af.database.list('/items', { preserveSnapshot: true });
+this.items
+  .subscribe(snapshots => {
+    snapshots.forEach(snapshot => {
+      console.log(snapshot.key)
+      console.log(snapshot.val())
+    });
+  })
 
-
+ */

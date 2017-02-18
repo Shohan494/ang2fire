@@ -22,6 +22,7 @@ export class AppComponent {
 
   constructor(af: AngularFire) {
     //as usual
+    //data is retrieving by object
     this.item = af.database.object('/item');
   }
   save(newName: string) {
