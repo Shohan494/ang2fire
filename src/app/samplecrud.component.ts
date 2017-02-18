@@ -21,7 +21,7 @@ export class AppComponent {
   title: "My Title";
 
   constructor(af: AngularFire) {
-  	//as usual
+    //as usual
     this.item = af.database.object('/item');
   }
   save(newName: string) {
