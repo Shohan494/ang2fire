@@ -4,6 +4,8 @@ import { AppComponent } from './app.component';
 
 //Angular2-Firebase
 import { AngularFireModule } from 'angularfire2';
+//importing for authentication
+import { AuthProviders, AuthMethods } from 'angularfire2';
 
 // Must export the config
 export const firebaseConfig = {
@@ -13,13 +15,22 @@ export const firebaseConfig = {
   storageBucket: "ang2fire-53a29.appspot.com",
   messagingSenderId: "739130327149"
 };
+//for authentication
+export const myFirebaseAuthConfig = {
+  //provider: authentication method (google/facebook/github etc)
+  provider: AuthProviders.Google,
+  method: AuthMethods.Redirect
+};
 
+//To specify your authentication ahead of time, you provide
+//the AngularFireModule.initializeApp function with an AuthProvider and an AuthMethod.
 @NgModule({
   imports: [
     BrowserModule,
-    AngularFireModule.initializeApp(firebaseConfig)
+    AngularFireModule.initializeApp(firebaseConfig, myFirebaseAuthConfig)
   ],
   declarations: [ AppComponent ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {}
+

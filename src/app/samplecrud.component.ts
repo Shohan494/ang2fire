@@ -1,3 +1,5 @@
+//put this piece of code in app.component.ts and then run
+
 import { Component } from '@angular/core';
 import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
 
@@ -45,6 +47,4 @@ this.item.subscribe(snapshot => {
   console.log(snapshot.val())
 }
 */
-
-//put this piece of code in app.component.ts and then run
 

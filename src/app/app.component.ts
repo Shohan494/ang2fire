@@ -1,42 +1,56 @@
 import { Component } from '@angular/core';
-//importingg list and object observable
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
-import { Subject } from 'rxjs/Subject';
+import { AngularFire } from 'angularfire2';
 
 @Component({
   selector: 'app-root',
   template: `
-  <ul>
-    <li *ngFor="let ite of item | async">
-      {{ ite.text }}
-    </li>
-  </ul>
-  <div>
-    <h4>Filter by size</h4>
-
-    <button (click)="filterBy('small')">Small</button>
-    <button (click)="filterBy('medium')">Medium</button>
-    <button (click)="filterBy('large')">Large</button>
-  </div>
+  <div> {{ (af.auth | async)?.uid }} </div>
+  <button (click)="login()">Login</button>
+  <button (click)="logout()">Logout</button>
   `,
 })
 
 export class AppComponent {
+  constructor(public af: AngularFire) {}
 
-  item: FirebaseListObservable<any[]>;
-  sizeSubject: Subject<any>;
-
-  constructor(af: AngularFire) {
-
-    this.sizeSubject = new Subject();
-    this.item = af.database.list('/item', {
-      query: {
-        orderByChild: 'size',
-        equalTo: this.sizeSubject
-      }
-    });
+  login() {
+    this.af.auth.login();
   }
-  filterBy(size: string) {
-    this.sizeSubject.next(size); 
+
+  logout() {
+     this.af.auth.logout();
   }
 }
+
+/* different methods of authentication
+
+// Anonymous
+af.auth.login({
+  provider: AuthProviders.Anonymous,
+  method: AuthMethods.Anonymous,
+});
+
+// Email and password
+af.auth.login({
+  email: 'email@example.com',
+  password: 'password',
+},
+{
+  provider: AuthProviders.Password,
+  method: AuthMethods.Password,
+});
+
+// Social provider redirect
+af.auth.login({
+  provider: AuthProviders.Twitter,
+  method: AuthMethods.Redirect,
+});
+
+// Social provider popup
+af.auth.login({
+  provider: AuthProviders.Github,
+  method: AuthMethods.Popup,
+});
+
+*/
+
