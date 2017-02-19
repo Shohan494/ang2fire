@@ -29,3 +29,31 @@ Run `ng github-pages:deploy` to deploy to GitHub Pages.
 ## Further help
 
 To get more help on the `angular-cli` use `ng help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Updating Angular CLI to the latest version and also for the latest install of local packages
+
+To update Angular CLI to a new version, you must update both the global package and your project's local package.
+
+Global package:
+```
+npm uninstall -g angular-cli @angular/cli
+npm cache clean
+npm install -g @angular/cli@latest
+```
+Local project package:
+```
+rm -rf node_modules dist # use rmdir on Windows
+npm install --save-dev @angular/cli@latest
+npm install
+```
+## files in src/app defining
+
+##### Just copy the code of the files below and paste it to **app.component.ts** file to get the desired result.
+
+- **app.component.ts**: Here by default authentication codes are present
+- **samplecrud.component.ts**: Retrieving data as object
+- **samplecrud2.component.ts**: Retrieving data as list
+- **samequery.component.ts**: Retrieving data through query
+
+Rock n Roll
+:punch:
