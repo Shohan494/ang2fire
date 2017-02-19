@@ -46,4 +46,5 @@ this.item.subscribe(snapshot => {
 }
 */
 
+//put this piece of code in app.component.ts and then run
 
